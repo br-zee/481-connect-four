@@ -13,47 +13,25 @@ class ConnectFour:
         self.board = board
 
     def play(self, players):
-        """
-        Main game loop.
-        Handles both human and computer players.
-        """
-        from Player import Computer
-        
         turn = 0
         self.prettyPrint()
 
         while (True):
-            current_player = players[turn]
-            print(f"\n{current_player.name}'s Turn to move")
-            
-            # Check if current player is a Computer
-            if isinstance(current_player, Computer):
-                # AI makes the move
-                move = current_player.makeMove(self)
-                if move is None:
-                    print("AI couldn't find a valid move!")
+
+            print(f"{players[turn].name}'s Turn to move")
+            print("Pick a column to drop a piece (1-7)")
+
+            print("Valid moves:", self.validMoves())
+
+            try:
+                move = int(input()) - 1
+                if self.dropPiece(move, players[turn]):
                     break
-            else:
-                # Human player inputs move
-                print("Pick a column to drop a piece (1-7)")
-                print("Valid moves:", self.validMoves())
-                
-                try:
-                    move = int(input()) - 1
-                except:
-                    print("Invalid input! Please enter a number.")
-                    continue
+
+                turn = 1 if turn == 0 else 0
             
-            # Try to drop the piece
-            if move < 0 or move >= self._cols:
-                print("Invalid column! Choose between 1-7.")
-                continue
-                
-            if self.dropPiece(move, current_player):
-                break  # Game over, someone won
-            
-            # Switch turns
-            turn = 1 if turn == 0 else 0
+            except:
+                print("Invalid move")
 
     def dropPiece(self, col, player):
         if col > self._cols - 1:
@@ -76,7 +54,6 @@ class ConnectFour:
             print("Cannot drop there, column is full")
             return False       
         
-    # creates a deep copy of game state
     def copy(self):
         import copy
         new_game = ConnectFour()
