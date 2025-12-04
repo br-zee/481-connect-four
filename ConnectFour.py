@@ -84,6 +84,24 @@ class ConnectFour:
             if self.board[0][col] is None:
                 columns.append(col)
         return columns
+    
+    # [HELPER FUNCTION] check if a specific player has won (used by minimax)
+    def checkWinner(self, player_id):
+        """check if player_id has 4 in a row anywhere on board"""
+        for row in range(self._rows):
+            for col in range(self._cols):
+                if self.board[row][col] == player_id:
+                    # create a mock player object for existing check methods
+                    class MockPlayer:
+                        def __init__(self, id):
+                            self.id = id
+                    mock = MockPlayer(player_id)
+                    
+                    if (self.checkVertical(row, col, mock) >= 4 or
+                        self.checkHorizontal(row, col, mock) >= 4 or
+                        self.checkDiagonal(row, col, mock) >= 4):
+                        return True
+        return False
 
 
     def validMoves(self):
