@@ -1,2 +1,2 @@
-# 481-tic-tac-toe
-cpsc 481 final project - tic tac toe
+# 481-connect-four
+cpsc 481 final project - connect 4
