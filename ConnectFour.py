@@ -53,16 +53,38 @@ class ConnectFour:
         else:
             print("Cannot drop there, column is full")
             return False       
-        
+    
+    # creates deeop copy of game state
     def copy(self):
         import copy
         new_game = ConnectFour()
         new_game.board = copy.deepcopy(self.board)
         return new_game
 
+    # simulates a move w/o changing real board
     def simulatedDrop(self, col, player):
-        # for minimax bot, copy board and simulate drop so it doesnt change game state 
-        return
+        simulated_game = self.copy()
+
+        # find lowest avail. row
+        rowToDrop = -1
+        for index in range(len(simulated_game.board)):
+            if simulated_game.board[index][col] == None:
+                rowToDrop = index
+        
+        # drop the piece
+        if rowToDrop != -1:
+            simulated_game.board[rowToDrop][col] = player_id
+            return simulated_game, rowToDrop
+        return None, None # column is full
+    
+    # returns list of columns that aren't full
+    def getValidColumns(self):
+        columns = []
+        for col in range(self._cols):
+            if self.board[0][col] is None:
+                columns.append(col)
+        return columns
+
 
     def validMoves(self):
         moves = []
