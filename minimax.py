@@ -104,8 +104,26 @@ def evaluate_board(board, ai_id, opponent_id):
     return score
 
 
-def minimax():
+def minimax(game, depth, is_maximizing, ai_id, opponent_id):
     """
     minimax algorithm (to-do)
     """
+
+    # base case 1: we've looked far enough ahead
+    if depth == 0:
+        return evaluate_board(game.board, ai_id, opponent_id)
+    
+    # base case 2: ai wins
+    if game.checkWinner(ai_id):
+        return 10000
+    
+    # base case 3: opponent wins
+    if game.checkWinner(opponent_id):
+        return -10000
+    
+    # base case 4: board is full (tied game)
+    valid_columns = game.getValidColumns()
+    if len(valid_columns) == 0:
+        return 0
+
     return
