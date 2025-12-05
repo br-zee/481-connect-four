@@ -106,7 +106,7 @@ def evaluate_board(board, ai_id, opponent_id):
 
 def minimax(game, depth, is_maximizing, ai_id, opponent_id):
     """
-    minimax algorithm (to-do)
+    minimax algorithm with recursion to find best move
     """
 
     # base case 1: we've looked far enough ahead
@@ -126,4 +126,33 @@ def minimax(game, depth, is_maximizing, ai_id, opponent_id):
     if len(valid_columns) == 0:
         return 0
 
-    return
+    # try all possible moves and pick best one
+    if is_maximizing:
+        # maximize score for ai
+        best_score = float('-inf')
+        
+        for col in valid_columns:
+            result = game.simulatedDrop(col, ai_id)
+            sim_game = result[0]
+            row = result[1]
+            
+            if sim_game:
+                score = minimax(sim_game, depth - 1, False, ai_id, opponent_id)
+                best_score = max(best_score, score)
+        
+        return best_score
+    
+    else:
+        # minimize score for opponent
+        best_score = float('inf')
+        
+        for col in valid_columns:
+            result = game.simulatedDrop(col, opponent_id)
+            sim_game = result[0]
+            row = result[1]
+            
+            if sim_game:
+                score = minimax(sim_game, depth - 1, True, ai_id, opponent_id)
+                best_score = min(best_score, score)
+        
+        return best_score
