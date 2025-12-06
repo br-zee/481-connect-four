@@ -199,14 +199,20 @@ class ConnectFour:
         return total1 if total1 > total2 else total2
     
     def prettyPrint(self):
-        print("\n===============================================")
+        print("\n=================================================")
+        for col in range(self._cols):
+            print(str(col+1).center(7), end="")
+
+        print("\n=================================================")
         for index, row in enumerate(self.board):
             for col in row:
-                printed = "-" if col == None else str(col)
-                print(printed.center(7), end="")
+
+                # emojis are two spaces long 
+                printed = "⚫" if col == None else str(col)
+                print(printed.center(5), end="|")
             
             print("\n" if index < self._rows else "")
-        print("===============================================")
+        print("=================================================")
 
 
 # temporary test for board state utils [will delete]
