@@ -13,25 +13,34 @@ class ConnectFour:
         self.board = board
 
     def play(self, players):
+        from Player import Computer
+        
         turn = 0
         self.prettyPrint()
 
         while (True):
 
             print(f"{players[turn].name}'s Turn to move")
-            print("Pick a column to drop a piece (1-7)")
-
-            print("Valid moves:", self.validMoves())
-
-            try:
-                move = int(input()) - 1
-                if self.dropPiece(move, players[turn]):
-                    break
-
-                turn = 1 if turn == 0 else 0
             
-            except:
-                print("Invalid move")
+            if isinstance(players[turn], Computer):
+                opponent_id = players[1 - turn].id
+                move = players[turn].choose_move(self, opponent_id)
+                print(f"Computer chooses column {move + 1}")
+            
+            else:
+                print("Pick a column to drop a piece (1-7)")
+                print("Valid moves:", self.validMoves())
+
+                try:
+                    move = int(input()) - 1
+                except:
+                    print("Invalid move")
+                    continue
+            
+            if self.dropPiece(move, players[turn]):
+                break
+
+            turn = 1 if turn == 0 else 0
 
     def dropPiece(self, col, player):
         if col > self._cols - 1:
