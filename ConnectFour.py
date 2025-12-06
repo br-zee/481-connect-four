@@ -33,35 +33,40 @@ class ConnectFour:
 
                 try:
                     move = int(input()) - 1
+
+                    # if trying to drop on nonexistent column
+                    if move > self._cols - 1:
+                        print("Cannot drop there, column is not on board")
+                        continue
+
+                    # if trying to drop on column that has no space
+                    if move not in self.getValidColumns():
+                        continue
+
                 except:
                     print("Invalid move")
                     continue
             
-            if self.dropPiece(move, players[turn]):
-                break
+            # drop piece and check if game is over
+            rowDropped = self.dropPiece(move, players[turn])
+            self.prettyPrint()  
 
+            if self.isGameOver(rowDropped, move, players[turn]):
+                print(f"{players[turn].name} wins!")
+                break 
+
+            # switch player turns
             turn = 1 if turn == 0 else 0
 
-    def dropPiece(self, col, player):
-        if col > self._cols - 1:
-            print("Cannot drop there, column is not on board")
-            return False
 
+    def dropPiece(self, col, player):
         rowToDrop = -1 
         for index, row in enumerate(self.board):
             if row[col] == None:
                 rowToDrop = index
         
-        if rowToDrop != -1:
-            self.board[rowToDrop][col] = player.id
-            self.prettyPrint()
-
-            if self.isGameOver(rowToDrop, col, player):
-                print(f"{player.name} wins!")
-                return True
-        else:
-            print("Cannot drop there, column is full")
-            return False       
+        self.board[rowToDrop][col] = player.id
+        return rowToDrop
     
     # creates deeop copy of game state
     def copy(self):
