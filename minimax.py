@@ -129,21 +129,27 @@ def minimax(game, depth, is_maximizing, ai_id, opponent_id, a = float("-inf"), b
     move_order = [3, 2, 4, 1, 5, 0, 6]
     ordered_moves = [col for col in move_order if col in valid_columns]
 
+    best_score = float("-inf") if is_maximizing else float("inf")
+
     # try all possible moves and pick best one
     for col in ordered_moves:
-
-        best_score = float("-inf") if is_maximizing else float("inf")
-
-        result = game.simulatedDrop(col, ai_id if is_maximizing else opponent_id)
-        score = minimax(game, depth - 1, not is_maximizing, ai_id, opponent_id, a, b)
-
+        
         # if maximizer:
         if is_maximizing:
+            row = game.dropPiece(col, ai_id)
+            score = minimax(game, depth - 1, False, ai_id, opponent_id, a, b)
+            game.undoDrop(row, col)
+
             best_score = max(best_score, score)
+
             a = max(a, best_score)
 
         # if minimizer
         else:
+            row = game.dropPiece(col, opponent_id)
+            score = minimax(game, depth - 1, True, ai_id, opponent_id, a, b)
+            game.undoDrop(row, col)
+
             best_score = min(best_score, score)
             b = min(b, best_score)
 

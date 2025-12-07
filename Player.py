@@ -27,7 +27,7 @@ class Computer(Player):
         {
             "name": "Hard",
             "depth": 4,
-            "random_chance": 0.1
+            "random_chance": 0.15
         },
         {
             "name": "Impossible",
@@ -51,20 +51,19 @@ class Computer(Player):
         scores = []
         
         for col in valid_columns:
-            sim_game, row = game.simulatedDrop(col, self.id) 
-            
-            if sim_game:
-                score = minimax(sim_game, self.selected_difficulty["depth"], False, self.id, opponent_id)
+            row = game.dropPiece(col, self.id) 
+            score = minimax(game, self.selected_difficulty["depth"], False, self.id, opponent_id)
+            game.undoDrop(row, col)
 
-                # add noise to score randomly
-                if random.random() < self.selected_difficulty["random_chance"]:
-                    score += random.randint(-2, 2)
+            # add noise to score randomly
+            if random.random() < self.selected_difficulty["random_chance"]:
+                score += random.randint(-2, 2)
 
-                scores.append([score, col])
+            scores.append([score, col])
 
-                if score > best_score:
-                    best_score = score
-                    best_col = col
+            if score > best_score:
+                best_score = score
+                best_col = col
         
         # randomly choose to select from all possible moves or choose best
         if random.random() < self.selected_difficulty["random_chance"]:

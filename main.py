@@ -11,7 +11,8 @@ if __name__ == "__main__":
     print("(0 - Easy, 1 - Medium, 2 - Hard, 3 - Impossible)")
     difficulty = int(input())
 
-    player2 = Computer("🟡", "AI", difficulty)
+    # player1 = Computer("🔴", "AI 1", 2)
+    player2 = Computer("🟡", "AI 2", difficulty)
 
     players = [player1, player2]
     turn = 0
