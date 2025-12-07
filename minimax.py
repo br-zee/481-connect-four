@@ -136,25 +136,22 @@ def minimax(game, depth, is_maximizing, ai_id, opponent_id, a = float("-inf"), b
         
         # if maximizer:
         if is_maximizing:
-            result = game.simulatedDrop(col, ai_id)
-            sim_game = result[0]
-            row = result[1]  
-            
-            if sim_game:  
-                score = minimax(sim_game, depth - 1, False, ai_id, opponent_id, a, b)  
-                best_score = max(best_score, score)
-                a = max(a, best_score)
-        
+            row = game.dropPiece(col, ai_id)
+            score = minimax(game, depth - 1, False, ai_id, opponent_id, a, b)
+            game.undoDrop(row, col)
+
+            best_score = max(best_score, score)
+
+            a = max(a, best_score)
+
         # if minimizer
         else:
-            result = game.simulatedDrop(col, opponent_id)
-            sim_game = result[0]
-            row = result[1]
-            
-            if sim_game:  
-                score = minimax(sim_game, depth - 1, True, ai_id, opponent_id, a, b) 
-                best_score = min(best_score, score)
-                b = min(b, best_score)
+            row = game.dropPiece(col, opponent_id)
+            score = minimax(game, depth - 1, True, ai_id, opponent_id, a, b)
+            game.undoDrop(row, col)
+
+            best_score = min(best_score, score)
+            b = min(b, best_score)
 
         # pruning
         if b <= a:

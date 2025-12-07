@@ -79,30 +79,6 @@ class ConnectFour:
     def undoDrop(self, row, col):
         self.board[row][col] = None
     
-    # creates deep copy of game state
-    def copy(self):
-        import copy
-        new_game = ConnectFour()
-        new_game.board = copy.deepcopy(self.board)
-        return new_game
-
-    # simulates a move w/o changing real board
-    def simulatedDrop(self, col, player_id):
-        simulated_game = self.copy()
-
-        # find lowest avail. row (board[0] = bottom of screen)
-        rowToDrop = -1
-        for index in range(self._rows):
-            if simulated_game.board[index][col] == None:
-                rowToDrop = index
-                break  # Found the lowest empty spot on screen
-        
-        # drop the piece
-        if rowToDrop != -1:
-            simulated_game.board[rowToDrop][col] = player_id
-            return simulated_game, rowToDrop
-        return None, None # column is full
-    
     # returns list of columns that aren't full
     def getValidColumns(self):
         columns = []
@@ -144,10 +120,6 @@ class ConnectFour:
         v = self.checkVertical(row, col, player) >= 4
         h = self.checkHorizontal(row, col, player) >= 4
         d = self.checkDiagonal(row, col, player) >= 4
-
-        # print("Vertical win?\t", v)
-        # print("Horizontal win?\t", h)
-        # print("Diagonal win?\t", d)
 
         return v or h or d
      
@@ -222,12 +194,12 @@ class ConnectFour:
             print(str(col+1).center(7), end="")
 
         print("\n=================================================")
-        for index, row in enumerate(self.board):
-            for col in row:
+        for row in range(self._rows-1, -1, -1):
+            for col in self.board[row]:
 
                 # emojis are two spaces long 
                 printed = "⚫" if col == None else str(col)
                 print(printed.center(5), end="|")
             
-            print("\n" if index < self._rows else "")
+            print("\n" if row < self._rows else "")
         print("=================================================")

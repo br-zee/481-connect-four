@@ -51,13 +51,9 @@ class Computer(Player):
         scores = []
         
         for col in valid_columns:
-            # use simulatedDrop instead of modifying the real board
-            sim_game, row = game.simulatedDrop(col, self.id)
-            
-            if sim_game is None:
-                continue  # skip invalid moves
-            
-            score = minimax(sim_game, self.selected_difficulty["depth"], False, self.id, opponent_id)
+            row = game.dropPiece(col, self.id) 
+            score = minimax(game, self.selected_difficulty["depth"], False, self.id, opponent_id)
+            game.undoDrop(row, col)
 
             # add noise to score randomly
             if random.random() < self.selected_difficulty["random_chance"]:
