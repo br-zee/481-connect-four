@@ -64,22 +64,51 @@ class ConnectFour:
 
     def dropPiece(self, col, player_id):
         rowToDrop = -1 
-        for index, row in enumerate(self.board):
-            if row[col] == None:
+        # board[0] = bottom of screen, board[5] = top of screen
+        # So we search from 0 upward to find first empty (lowest on screen)
+        for index in range(self._rows):
+            if self.board[index][col] == None:
                 rowToDrop = index
+                break  # Found the lowest empty spot on screen
         
-        self.board[rowToDrop][col] = player_id
+        if rowToDrop != -1:
+            self.board[rowToDrop][col] = player_id
         return rowToDrop
     
     # used by minimax to undo move after applying and searching
     def undoDrop(self, row, col):
         self.board[row][col] = None
     
+    # creates deep copy of game state
+    def copy(self):
+        import copy
+        new_game = ConnectFour()
+        new_game.board = copy.deepcopy(self.board)
+        return new_game
+
+    # simulates a move w/o changing real board
+    def simulatedDrop(self, col, player_id):
+        simulated_game = self.copy()
+
+        # find lowest avail. row (board[0] = bottom of screen)
+        rowToDrop = -1
+        for index in range(self._rows):
+            if simulated_game.board[index][col] == None:
+                rowToDrop = index
+                break  # Found the lowest empty spot on screen
+        
+        # drop the piece
+        if rowToDrop != -1:
+            simulated_game.board[rowToDrop][col] = player_id
+            return simulated_game, rowToDrop
+        return None, None # column is full
+    
     # returns list of columns that aren't full
     def getValidColumns(self):
         columns = []
         for col in range(self._cols):
-            if self.board[0][col] is None:
+            # Check if the TOP row (board[5]) is empty - that means column isn't full
+            if self.board[self._rows - 1][col] is None:
                 columns.append(col)
         return columns
     
