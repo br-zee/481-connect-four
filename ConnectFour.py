@@ -150,9 +150,14 @@ class ConnectFour:
         # print("Diagonal win?\t", d)
 
         return v or h or d
-
+     
     def checkVertical(self, row, col, player):
         total = 1
+        
+        top = row - 1
+        while (top >= 0 and self.board[top][col] == player.id):
+            total += 1
+            top -= 1
         
         bottom = row + 1
         while (bottom < self._rows and self.board[bottom][col] == player.id):
