@@ -157,25 +157,4 @@ The AI uses the **Minimax algorithm** to look ahead several moves and choose the
 
 ---
 
-## Authors
-
-- **Bryan Pham** - CPSC 481 Student
-
----
-
-## License
-
-This project was created for educational purposes as part of CPSC 481.
-
----
-
-## Acknowledgments
-
-- Connect Four game rules and mechanics
-- Minimax algorithm and AI game theory concepts
-- Pygame library for graphical interface
-- CPSC 481 course materials and instruction
-
----
-
 **Enjoy playing! May the best strategist win!**
