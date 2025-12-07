@@ -17,17 +17,17 @@ class Computer(Player):
         {
            "name": "Easy",
            "depth": 2,
-           "random_chance": 0.35
+           "random_chance": 0.25
         },
         {
             "name": "Medium",
             "depth": 3,
-            "random_chance": 0.2
+            "random_chance": 0.1
         },
         {
             "name": "Hard",
             "depth": 4,
-            "random_chance": 0.15
+            "random_chance": 0.05
         },
         {
             "name": "Impossible",

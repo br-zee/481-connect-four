@@ -199,16 +199,3 @@ class ConnectFour:
             
             print("\n" if index < self._rows else "")
         print("=================================================")
-
-
-# temporary test for board state utils [will delete]
-if __name__ == "__main__":
-    game = ConnectFour()
-    print("Original board empty?", game.board[5][3] == None)
-    
-    # Simulate a drop
-    sim_game, row = game.simulatedDrop(3, 1)
-    
-    print("Simulated board has piece?", sim_game.board[row][3] == 1)
-    print("Original board still empty?", game.board[5][3] == None)
-    print("✅ Test passed!" if game.board[5][3] == None else "❌ Test failed!")
