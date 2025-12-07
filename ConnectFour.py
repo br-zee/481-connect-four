@@ -1,3 +1,5 @@
+import time
+
 class ConnectFour:
 
     board = []
@@ -24,8 +26,11 @@ class ConnectFour:
             
             if isinstance(players[turn], Computer):
                 opponent_id = players[1 - turn].id
+
+                t0 = time.perf_counter()
                 move = players[turn].choose_move(self, opponent_id)
-                print(f"Computer chooses column {move + 1}")
+                t1 = time.perf_counter()
+                print(f"Computer chooses column {move + 1}, took {(t1-t0):.2f} seconds")
             
             else:
                 print("Pick a column to drop a piece (1-7)")

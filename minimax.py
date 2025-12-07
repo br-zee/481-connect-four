@@ -103,7 +103,6 @@ def evaluate_board(board, ai_id, opponent_id):
     
     return score
 
-
 def minimax(game, depth, is_maximizing, ai_id, opponent_id, a = float("-inf"), b = float("inf")):
     """
     minimax algorithm with recursion to find best move
@@ -125,44 +124,31 @@ def minimax(game, depth, is_maximizing, ai_id, opponent_id, a = float("-inf"), b
     valid_columns = game.getValidColumns()
     if len(valid_columns) == 0:
         return 0
+    
+    # check ideal moves first to maximize pruning
+    move_order = [3, 2, 4, 1, 5, 0, 6]
+    ordered_moves = [col for col in move_order if col in valid_columns]
 
     # try all possible moves and pick best one
-    if is_maximizing:
-        # maximize score for ai
-        best_score = float('-inf')
-        
-        for col in valid_columns:
-            result = game.simulatedDrop(col, ai_id)
-            sim_game = result[0]
-            row = result[1]
-            
-            if sim_game:
-                score = minimax(sim_game, depth - 1, False, ai_id, opponent_id, a, b)
-                best_score = max(best_score, score)
+    for col in ordered_moves:
 
-                # pruning
-                if best_score >= b:
-                    return best_score
-                a = max(a, best_score)
-        
-        return best_score
-    
-    else:
-        # minimize score for opponent
-        best_score = float('inf')
-        
-        for col in valid_columns:
-            result = game.simulatedDrop(col, opponent_id)
-            sim_game = result[0]
-            row = result[1]
-            
-            if sim_game:
-                score = minimax(sim_game, depth - 1, True, ai_id, opponent_id, a, b)
-                best_score = min(best_score, score)
+        best_score = float("-inf") if is_maximizing else float("inf")
 
-                # pruning
-                if best_score <= a:
-                    return best_score
-                b = min(b, best_score)
+        result = game.simulatedDrop(col, ai_id if is_maximizing else opponent_id)
+        score = minimax(game, depth - 1, not is_maximizing, ai_id, opponent_id, a, b)
+
+        # if maximizer:
+        if is_maximizing:
+            best_score = max(best_score, score)
+            a = max(a, best_score)
+
+        # if minimizer
+        else:
+            best_score = min(best_score, score)
+            b = min(b, best_score)
+
+        # pruning
+        if b <= a:
+            break
         
-        return best_score
+    return best_score

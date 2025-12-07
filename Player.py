@@ -1,3 +1,5 @@
+import random
+
 class Player:
 
     id = -1
@@ -10,8 +12,34 @@ class Player:
 
 class Computer(Player):
 
-    def __init__(self, id, name="Computer"):
+    selected_difficulty = {}
+    difficulties = [
+        {
+           "name": "Easy",
+           "depth": 2,
+           "random_chance": 0.35
+        },
+        {
+            "name": "Medium",
+            "depth": 3,
+            "random_chance": 0.2
+        },
+        {
+            "name": "Hard",
+            "depth": 4,
+            "random_chance": 0.1
+        },
+        {
+            "name": "Impossible",
+            "depth": 6,
+            "random_chance": 0.00001
+        }
+    ]
+
+    def __init__(self, id, name="Computer", difficulty = 0):
         super().__init__(id, name)
+        self.selected_difficulty = self.difficulties[difficulty]
+        self.name = f"{self.selected_difficulty['name']} {name}"
         
     def choose_move(self, game, opponent_id):
         from minimax import minimax
@@ -19,15 +47,28 @@ class Computer(Player):
         valid_columns = game.getValidColumns()
         best_score = float('-inf')
         best_col = valid_columns[0]
+
+        scores = []
         
         for col in valid_columns:
-            sim_game, row = game.simulatedDrop(col, self.id)
+            sim_game, row = game.simulatedDrop(col, self.id) 
             
             if sim_game:
-                score = minimax(sim_game, 4, False, self.id, opponent_id)
-                
+                score = minimax(sim_game, self.selected_difficulty["depth"], False, self.id, opponent_id)
+
+                # add noise to score randomly
+                if random.random() < self.selected_difficulty["random_chance"]:
+                    score += random.randint(-2, 2)
+
+                scores.append([score, col])
+
                 if score > best_score:
                     best_score = score
                     best_col = col
         
-        return best_col
+        # randomly choose to select from all possible moves or choose best
+        if random.random() < self.selected_difficulty["random_chance"]:
+            print("AI chose randomly")
+            return random.choice(scores)[1]
+        else:
+            return best_col
