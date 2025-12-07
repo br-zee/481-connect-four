@@ -34,8 +34,6 @@ class ConnectFour:
             
             else:
                 print("Pick a column to drop a piece (1-7)")
-                print("Valid moves:", self.validMoves())
-
                 try:
                     move = int(input()) - 1
 

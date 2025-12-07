@@ -17,17 +17,17 @@ class Computer(Player):
         {
            "name": "Easy",
            "depth": 1,
-           "random_chance": 0.3
+           "random_chance": 0.75
         },
         {
             "name": "Medium",
             "depth": 2,
-            "random_chance": 0.08
+            "random_chance": 0.45
         },
         {
             "name": "Hard",
             "depth": 4,
-            "random_chance": 0.01
+            "random_chance": 0.25
         },
         {
             "name": "Impossible",
@@ -59,7 +59,8 @@ class Computer(Player):
             if random.random() < self.selected_difficulty["random_chance"]:
                 score += random.randint(-5, 5)
 
-            scores.append([score, col])
+            if random.random() <= self.selected_difficulty["random_chance"]:
+                scores.append([score, col])
 
             if score > best_score:
                 best_score = score
@@ -67,7 +68,7 @@ class Computer(Player):
         
         # randomly choose to select from all possible moves or choose best
         if random.random() < self.selected_difficulty["random_chance"]:
-            print("AI chose randomly")
-            return random.choice(scores)[1]
+            print(f"AI chose randomly from: {scores}")
+            return random.choice(scores)[1] if len(scores) > 0 else best_col
         else:
             return best_col
