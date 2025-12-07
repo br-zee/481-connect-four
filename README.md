@@ -9,7 +9,7 @@ A Python implementation of Connect Four with an intelligent AI opponent powered 
 
 ---
 
-## 🌟 Features
+## Features
 
 - **Smart AI Opponent** - Uses Minimax algorithm to make strategic decisions
 - **Multiple Difficulty Levels** - Easy, Medium, Hard, and Impossible
