@@ -16,18 +16,18 @@ class Computer(Player):
     difficulties = [
         {
            "name": "Easy",
-           "depth": 2,
-           "random_chance": 0.25
+           "depth": 1,
+           "random_chance": 0.3
         },
         {
             "name": "Medium",
-            "depth": 3,
-            "random_chance": 0.1
+            "depth": 2,
+            "random_chance": 0.08
         },
         {
             "name": "Hard",
             "depth": 4,
-            "random_chance": 0.05
+            "random_chance": 0.01
         },
         {
             "name": "Impossible",
@@ -57,7 +57,7 @@ class Computer(Player):
 
             # add noise to score randomly
             if random.random() < self.selected_difficulty["random_chance"]:
-                score += random.randint(-2, 2)
+                score += random.randint(-5, 5)
 
             scores.append([score, col])
 
