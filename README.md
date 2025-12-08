@@ -39,6 +39,7 @@ pip install pygame
 ```bash
 python3 game_ui.py
 ```
+- Difficulty is automatically set to "Hard AI"
 - Click on a column to drop your piece
 - Red piece = Player 1
 - Yellow piece = AI
